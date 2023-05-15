@@ -7,42 +7,17 @@ body {
     margin: 0;
     padding: 0;
     width: 100vw;
-    overflow-x: hidden;
-    background-image: url("https://materialesecologicos.es/wp-content/uploads/2019/02/corcho-ecologico.jpg");
-
-}
-
-#imagenFondo {
-    max-width: 100vw;
-    overflow: hidden;
-}
-
-#imagenFondo img {
-    position: absolute;
-    z-index: -10;
-    height: 100vh;
-    max-width: 100vw;
-    filter: blur(0.5px);
-}
-
-
-#tareasSection h2 {
-    background-image: linear-gradient(to bottom right, #a2a1a1, #c3c3c0);
 }
 
 #formularioTareas {
-    /*background-color: rgb(137, 188, 215);*/
-    background-color: rgb(157, 189, 136);
+
+    background-color: rgb(137, 188, 215);
     height: 100vh;
 }
 
-#formularioTareas input{
-    border-radius: 5px;
-    border: 0px;
-}
+
 
 textarea {
-    border-radius: 5px;
     resize: none;
 }
 
@@ -81,21 +56,27 @@ div.tarea span:hover {
     cursor: pointer;
 }
 
-#scrolleable {
-    height: 85vh;
+#scrolleable{
+    height: 90vh;
     overflow-y: auto;
     overflow-x: hidden;
 }
 
+
 #lista-tareas {
+    /*background: #DDD;*/
     max-width: 1200px;
+    width: 270px;
 }
 
+/* clear fix */
 #lista-tareas:after {
     content: '';
     display: block;
     clear: both;
 }
+
+/* ---- .grid-item ---- */
 
 .tarea {
     padding-left: 10px;
@@ -124,7 +105,7 @@ div.tarea span:hover {
 }
 
 .tarea:hover {
-    border-color: #a0913b;
+    border-color: hsla(0, 0%, 100%, 0.5);
     box-shadow: 2px 2px 2px hsla(0, 0%, 16%, 0.724);
     cursor: move;
 }
@@ -142,35 +123,21 @@ div.tarea span:hover {
     transition: transform 0.2s;
 }
 
-
-/* media querys */
-
 @media only screen and (min-width: 1520px) {
     #lista-tareas {
-        width: 1040px;
+        width: 1030px;
     }
 }
 
 @media only screen and (max-width: 1519px) {
     #lista-tareas {
-        width: 780px;
+        width: 775px;
     }
 }
 
 @media only screen and (max-width: 1180px) {
     #lista-tareas {
         width: 530px;
-    }
-}
-
-@media only screen and (min-width: 992px) {
-    #tareasSection h2 {
-        margin-top: 40px;
-        margin-bottom: 30px
-    }
-
-    #formularioTareas {
-        border-top-left-radius: 20px;
     }
 }
 
@@ -181,20 +148,9 @@ div.tarea span:hover {
         margin-bottom: 50px;
     }
 
-    #tareasSection h2 {
+    h2 {
         margin-bottom: 30px
     }
 
 }
 
-@media only screen and (max-width: 768px) {
-    #lista-tareas {
-        width: 530px;
-    }
-}
-
-@media only screen and (max-width: 532px) {
-    #lista-tareas {
-        width: 270px;
-    }
-}
