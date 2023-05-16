@@ -11,7 +11,7 @@ const guardarTarea = (db, tarea) => {
     success("Registrado Correctamente")
 
     setTimeout(function() {
-        window.location.href = '/';
+        window.location.href = './index.html';
       }, 2000);
 
     //window.location.href = '/';
@@ -54,11 +54,13 @@ const crearTarea = (tareas, tarea, db) => {
     let tituloTarea = document.createElement('h4');
     let descripcionTarea = document.createElement('p');
     let fechaTarea = document.createElement('p');
+    let updateButton = document.createElement('button');
     let iconoBorrar = document.createElement('span')
 
-    tituloTarea.innerHTML = tarea.titulo;
-    descripcionTarea.innerHTML = tarea.descripcion;
+    tituloTarea.innerText = tarea.titulo;
+    descripcionTarea.innerText = tarea.descripcion;
     fechaTarea.innerHTML = tarea.fecha;
+    updateButton.innerText = 'Editar';
     iconoBorrar.innerHTML = '<i class="fa fa-times-circle-o"></i>'
 
     divTarea.classList.add('tarea');
@@ -68,21 +70,18 @@ const crearTarea = (tareas, tarea, db) => {
 
     iconoBorrar.onclick = () => {
         db.removeItem(tarea.id);
-        window.location.href = '/';
+        window.location.href = './index.html';
+    }
 
-        /*
-        let descripcion = prompt("Please enter your name:", "Harry Potter");
-        let traida = JSON.parse(localStorage.getItem(tarea.id));
-        traida.descripcion = descripcion
-        db.setItem(tarea.id, JSON.stringify(traida))
-        window.location.href = '/';
-        */
+    updateButton.onclick = () => {
+        inputAlert(db, tarea.id);
     }
 
     divTarea.appendChild(iconoBorrar);
     divTarea.appendChild(tituloTarea);
     divTarea.appendChild(descripcionTarea);
     divTarea.appendChild(fechaTarea);
+    divTarea.appendChild(updateButton);
 
     tareas.appendChild(divTarea);
 }
@@ -102,13 +101,36 @@ const success = (texto) => {
     })
 }
 
+async function inputAlert(db, id) {
+    let traida = JSON.parse(localStorage.getItem(id));
+    const { value: text } = await Swal.fire({
+        input: 'textarea',
+        max: 150,
+        inputLabel: 'Introduce una Descripción',
+        inputPlaceholder: 'Escribe tu descripción aquí...',
+        inputValue: traida.descripcion,
+        inputAttributes: {
+          'aria-label': 'Escribe tu descripción aquí',
+          maxlength: 150
+        },
+        showCancelButton: true
+        
+      })
+      
+      if (text) {
+        traida.descripcion = text
+        db.setItem(id, JSON.stringify(traida))
+        window.location.href = '/index.html';
+      }
+}
+
 
 cargarTareas(db, tareas);
 
 var pckry = new Packery(tareas, {
     itemSelector: '.tarea',
     columnWidth: 250,
-    gutter: 5,
+    gutter: 10,
 });
 
 pckry.getItemElements().forEach(function (itemElem) {
