@@ -4,15 +4,18 @@ const db = window.localStorage;
 
 let lastId = localStorage.getItem('lastId') || 0;
 
+let aux = [];
+
 const guardarTarea = (db, tarea) => {
     db.setItem(tarea.id, JSON.stringify(tarea));
     localStorage.setItem('lastId', lastId.toString());
 
     success("Registrado Correctamente")
 
-    setTimeout(function() {
-        window.location.href = './index.html';
-      }, 2000);
+    setTimeout(function () {
+        reload(db, tareas)
+        //window.location.href = './index.html';
+    }, 1000);
 
     //window.location.href = '/';
 }
@@ -42,11 +45,12 @@ formulario.addEventListener('submit', procesarFormulario);
 const cargarTareas = (db, tareas) => {
     let claves = Object.keys(db);
     for (clave of claves) {
-        if (clave !== 'lastId') {
+        if (clave !== 'lastId' && !aux.includes(clave)) {
             let tarea = JSON.parse(db.getItem(clave));
             crearTarea(tareas, tarea, db);
         }
     }
+    aux = claves;
 }
 
 const crearTarea = (tareas, tarea, db) => {
@@ -55,7 +59,7 @@ const crearTarea = (tareas, tarea, db) => {
     let descripcionTarea = document.createElement('p');
     let fechaTarea = document.createElement('p');
     let updateButton = document.createElement('button');
-    let iconoBorrar = document.createElement('span')
+    let iconoBorrar = document.createElement('button')
 
     tituloTarea.innerText = tarea.titulo;
     descripcionTarea.innerText = tarea.descripcion;
@@ -64,13 +68,17 @@ const crearTarea = (tareas, tarea, db) => {
     iconoBorrar.innerHTML = '<i class="fa fa-times-circle-o"></i>'
 
     divTarea.classList.add('tarea');
-    descripcionTarea.classList.add('descripcion')
-    fechaTarea.classList.add('fechaTarea')
-    iconoBorrar.classList.add('iconoBorrar')
+    descripcionTarea.classList.add('descripcion');
+    fechaTarea.classList.add('fechaTarea');
+    iconoBorrar.classList.add('iconoBorrar');
+    updateButton.classList.add('updateButton');
 
     iconoBorrar.onclick = () => {
         db.removeItem(tarea.id);
-        window.location.href = './index.html';
+        tareas.innerHTML = '';
+        aux = [];
+        reload(db, tareas);
+        //window.location.href = './index.html';
     }
 
     updateButton.onclick = () => {
@@ -91,7 +99,7 @@ const success = (texto) => {
         toast: true,
         position: 'top-end',
         showConfirmButton: false,
-        timer: 2000,
+        timer: 1500,
         timerProgressBar: true,
     })
 
@@ -103,37 +111,69 @@ const success = (texto) => {
 
 async function inputAlert(db, id) {
     let traida = JSON.parse(localStorage.getItem(id));
-    const { value: text } = await Swal.fire({
+    const {
+        value: text
+    } = await Swal.fire({
         input: 'textarea',
         max: 150,
         inputLabel: 'Introduce una Descripción',
         inputPlaceholder: 'Escribe tu descripción aquí...',
         inputValue: traida.descripcion,
         inputAttributes: {
-          'aria-label': 'Escribe tu descripción aquí',
-          maxlength: 150
+            'aria-label': 'Escribe tu descripción aquí',
+            maxlength: 150
         },
         showCancelButton: true
-        
-      })
-      
-      if (text) {
+
+    })
+
+    if (text) {
         traida.descripcion = text
         db.setItem(id, JSON.stringify(traida))
-        window.location.href = '/index.html';
-      }
+        tareas.innerHTML = '';
+        aux = [];
+        reload(db, tareas);
+        //window.location.href = './index.html';
+    }
+}
+
+const minDate = () => {
+    const fecha = document.getElementById("fecha");
+
+    const fechaAhora = new Date();
+    const year = fechaAhora.getFullYear();
+    const mes = fechaAhora.getMonth() + 1;
+    const dia = fechaAhora.getDate();
+
+
+    let fechaDeshabilitar;
+    if ([10, 11, 12].includes(mes)) {
+        fechaDeshabilitar = `${year}-${mes}-${dia}`;
+    } else {
+        fechaDeshabilitar = `${year}-0${mes}-${dia}`
+    }
+    fecha.min = fechaDeshabilitar;
 }
 
 
-cargarTareas(db, tareas);
+const creaPanel = () => {
+    var pckry = new Packery(tareas, {
+        itemSelector: '.tarea',
+        columnWidth: 250,
+        gutter: 10,
+    });
 
-var pckry = new Packery(tareas, {
-    itemSelector: '.tarea',
-    columnWidth: 250,
-    gutter: 10,
-});
+    pckry.getItemElements().forEach(function (itemElem) {
+        var draggie = new Draggabilly(itemElem);
+        pckry.bindDraggabillyEvents(draggie);
+    });
+}
 
-pckry.getItemElements().forEach(function (itemElem) {
-    var draggie = new Draggabilly(itemElem);
-    pckry.bindDraggabillyEvents(draggie);
-});
+const reload = (db, tareas) => {
+    cargarTareas(db, tareas);
+    creaPanel();
+}
+
+minDate();
+
+reload(db, tareas);

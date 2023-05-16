@@ -98,6 +98,7 @@ div.tarea h4 {
 .descripcion {
     grid-area: descripcion;
     overflow: hidden;
+    font-size: 14px;
 }
 
 .fechaTarea {
@@ -106,19 +107,58 @@ div.tarea h4 {
     padding-right: 10px;
 }
 
+.updateButton {
+    position: relative;
+    top: -38px;
+    width: 80px;
+
+    font-size: 17px;
+    padding: 2px;
+    border: transparent;
+    box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.4);
+    background: #780e78ae;
+    color: white;
+    border-radius: 4px;
+}
+
+.updateButton:hover {
+    background: rgb(2, 0, 36);
+    background: linear-gradient(90deg, #b91f4b 0%, #77365e 100%);
+}
+
+.updateButton:active {
+    transform: translate(0em, 0.2em);
+}
+
+/*
 div.tarea span {
     grid-area: borrar;
     display: flex;
     justify-content: center;
     align-items: top;
     margin-bottom: 10px;
+    height: min-content;
+    padding: 5px;
+}
+*/
+div.tarea button:first-child {
+    grid-area: borrar;
+    display: flex;
+    justify-content: center;
+    align-items: top;
+    margin-bottom: 10px;
+    height: min-content;
+    padding: 5px;
+    background: none;
+    border: none;
 }
 
-div.tarea span i {
+
+div.tarea button:first-child i {
     font-size: 20px;
 }
 
-div.tarea span:hover {
+div.tarea button:first-child:hover {
     color: red;
     cursor: pointer;
 }
@@ -148,7 +188,8 @@ div.tarea span:hover {
 .tarea {
     color: rgb(89, 4, 237);
     color: rgb(4, 51, 237);
-    font-family: 'Orbitron', sans-serif;
+    color: white;
+    /*font-family: 'Orbitron', sans-serif;*/
     padding-left: 15px;
     padding-top: 10px;
     display: grid;

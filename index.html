@@ -16,8 +16,8 @@
     <link href="https://cdn.jsdelivr.net/npm/@sweetalert2/theme-dark@4/dark.css" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"></script>
 
-<link rel="stylesheet" href="@sweetalert2/theme-dark/dark.css">
-<script src="sweetalert2/dist/sweetalert2.min.js"></script>
+<link type="html/text" rel="stylesheet" href="@sweetalert2/theme-dark/dark.css">
+<script type="application/json" src="sweetalert2/dist/sweetalert2.min.js"></script>
 
     <title>Lista de tareas</title>
 </head>
@@ -45,7 +45,7 @@
                     <textarea id="descripcion" placeholder="Añade una descripción" maxlength="150" cols="30" rows="5"
                         class="col-12"></textarea>
                     <h3>Fecha límite</h3>
-                    <input type="date" id="fecha" required class="col-12">
+                    <input type="date" id="fecha" required class="col-12" min="10-01-2000">
                     <button type="submit" class="col-12 mt-3 btn btn-primary">enviar</button>
                 </form>
             </section>
